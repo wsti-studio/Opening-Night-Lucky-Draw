@@ -40,27 +40,19 @@
   .phone h1 { margin: 4px 0 0; font-size: clamp(34px, 9vw, 48px); font-weight: 900; line-height: 1.02; letter-spacing: -0.02em; text-wrap: balance; }
   .lede { margin: 10px 0 0; color: var(--ink-2); font-size: 17px; }
   .card { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 18px; }
-  .field { display: grid; gap: 6px; margin-top: 16px; }
+  .field { display: grid; gap: 5px; margin-top: 12px; min-width: 0; }
   .field:first-child { margin-top: 0; }
-  .field > label, legend { font-weight: 800; font-size: 15px; padding: 0; }
+  .field > label { font-weight: 800; font-size: 15px; }
   .hint { font-weight: 400; color: var(--muted); }
-  fieldset { border: 0; margin: 16px 0 0; padding: 0; min-width: 0; }
-  legend { margin-bottom: 8px; }
-  input[type=text], input[type=email] { width: 100%; font: inherit; font-size: 16px; color: var(--ink); background: rgba(0,0,0,.28); border: 1px solid var(--line); border-radius: 12px; padding: 12px 13px; }
+  .pair { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr); gap: 10px; margin-top: 12px; }
+  .pair .field { margin-top: 0; }
+  .sub { margin: 4px 0 0; color: var(--muted); font-size: 13px; }
+  input[type=text], input[type=email], select { width: 100%; font: inherit; font-size: 16px; color: var(--ink); background-color: rgba(0,0,0,.28); border: 1px solid var(--line); border-radius: 12px; padding: 12px 13px; }
+  select { appearance: none; -webkit-appearance: none; padding-right: 34px; text-overflow: ellipsis; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23F0A830' stroke-width='2'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; background-size: 12px; }
+  select:has(option[value=""]:checked) { color: var(--muted); }
   input::placeholder { color: var(--muted); }
-  input[type=text]:focus, input[type=email]:focus { outline: 2px solid var(--amber); outline-offset: 1px; }
-  .chips { display: grid; grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); gap: 8px; }
-  .opts { display: grid; gap: 8px; }
-  .chip, .opt { position: relative; display: flex; gap: 10px; align-items: flex-start; border: 1px solid var(--line); background: rgba(0,0,0,.22); border-radius: 12px; padding: 11px 12px; cursor: pointer; }
-  .chip { justify-content: center; font-weight: 700; }
-  .chip input, .opt input { position: absolute; opacity: 0; pointer-events: none; }
-  .opt b { display: block; font-weight: 800; }
-  .opt small { display: block; color: var(--muted); font-size: 13px; line-height: 1.35; margin-top: 2px; }
-  .chip:has(input:checked), .opt:has(input:checked) { border-color: var(--amber); background: rgba(240,168,48,.16); box-shadow: 0 0 0 1px var(--amber) inset; }
-  .chip:has(input:focus-visible), .opt:has(input:focus-visible) { outline: 3px solid var(--amber); outline-offset: 2px; }
-  .opt .dot { flex: none; width: 18px; height: 18px; margin-top: 2px; border-radius: 50%; border: 2px solid var(--muted); }
-  .opt:has(input:checked) .dot { border-color: var(--amber); background: radial-gradient(circle, var(--amber) 0 45%, transparent 50%); }
-  .tick { display: flex; gap: 10px; align-items: flex-start; margin-top: 18px; }
+  input[type=text]:focus, input[type=email]:focus, select:focus { outline: 2px solid var(--amber); outline-offset: 1px; }
+  .tick { display: flex; gap: 10px; align-items: flex-start; margin-top: 14px; }
   .tick input { width: 22px; height: 22px; margin-top: 1px; accent-color: var(--amber); flex: none; }
   .tick label { font-size: 14px; color: var(--ink-2); }
   .tick a { color: var(--ink); }
@@ -165,34 +157,45 @@
     <img class="logo" src="festi-logo.svg" alt="WSTI Festi" width="1825" height="316">
     <p class="eyebrow">Opening Night · Thursday 5 November</p>
     <h1>Lucky draw</h1>
-    <p class="lede">Enter for a chance to win <mark class="todo">[prize]</mark>. Five winners are drawn live on stage tonight, and we email every winner.</p>
+    <p class="lede">Win <mark class="todo">[prize]</mark>. Five winners are drawn live on stage tonight.</p>
   </header>
 
   <section class="card" id="form-card">
     <form id="f" novalidate>
       <div class="field">
-        <label for="nick">Nickname <span class="hint">(shown on the big screen)</span></label>
+        <label for="nick">Nickname <span class="hint">· shown on screen</span></label>
         <input id="nick" type="text" maxlength="20" autocomplete="nickname" placeholder="e.g. Sam" enterkeyhint="next">
       </div>
       <div class="field">
-        <label for="email">Email <span class="hint">(so we can tell you if you win)</span></label>
+        <label for="email">Email <span class="hint">· if you win</span></label>
         <input id="email" type="email" inputmode="email" autocomplete="email" autocapitalize="off" spellcheck="false" placeholder="you@example.com" enterkeyhint="next">
       </div>
-      <fieldset id="age-set">
-        <legend>Age group</legend>
-        <div class="chips" id="age"></div>
-      </fieldset>
-      <fieldset id="eth-set">
-        <legend>Cultural or ethnic background <span class="hint">(groups used by the Australian Bureau of Statistics)</span></legend>
-        <div class="opts" id="eth"></div>
-      </fieldset>
-      <div class="field" style="margin-top:16px">
-        <label for="pc">Postcode where you live, work or study</label>
-        <input id="pc" type="text" inputmode="numeric" pattern="[0-9]{4}" autocomplete="postal-code" placeholder="2150">
+      <div class="pair">
+        <div class="field">
+          <label for="pc">Postcode</label>
+          <input id="pc" type="text" inputmode="numeric" pattern="[0-9]{4}" autocomplete="postal-code" placeholder="2150" aria-describedby="pc-hint">
+        </div>
+        <div class="field">
+          <label for="age">Age group</label>
+          <select id="age"></select>
+        </div>
+      </div>
+      <p class="sub" id="pc-hint">Where you live, work or study.</p>
+      <div class="field">
+        <label for="eth">Cultural or ethnic background</label>
+        <select id="eth"></select>
+      </div>
+      <div class="field">
+        <label for="org">Organisation, or uni or school <span class="hint">· optional</span></label>
+        <input id="org" type="text" maxlength="80" autocomplete="organization" placeholder="Where you work or study" enterkeyhint="done">
+      </div>
+      <div class="tick">
+        <input id="citizen" type="checkbox">
+        <label for="citizen">I'm interested in future citizen science programs with City of Parramatta.</label>
       </div>
       <div class="tick">
         <input id="consent" type="checkbox">
-        <label for="consent">I agree to the <a href="#privacy">privacy note</a> and the <a href="#terms">draw terms</a> below.</label>
+        <label for="consent">I agree to the <a href="#privacy">privacy note</a> and <a href="#terms">draw terms</a>.</label>
       </div>
       <button class="go" id="go" type="submit">Enter the draw</button>
       <p class="msg" id="msg" role="status" aria-live="polite"></p>
@@ -211,7 +214,8 @@
   <details id="privacy">
     <summary>Privacy note</summary>
     <p>WSTI collects your details to run this lucky draw and to email you if you win. Your nickname shows on the big screen. Nothing else is ever shown.</p>
-    <p>Your age group, background and postcode are collected at the request of the City of Parramatta, to understand who comes to WSTI Festi. <mark class="todo">[Council receives totals only, never your name or email.]</mark> You can choose "Prefer not to say" for age group and background.</p>
+    <p>Your postcode, age group, background and organisation are collected for the City of Parramatta. WSTI reports them to Council as totals for each event and for the whole festival. You can choose "Prefer not to say" for age group and background.</p>
+    <p>If you tick the citizen science box, <mark class="todo">[WSTI or Council]</mark> may contact you about future programs with Council. Leave it unticked and nobody will.</p>
     <p>To see or remove your details, email <mark class="todo">[contact email]</mark>.</p>
   </details>
 
@@ -312,8 +316,11 @@
   /* ---------------- Phone ---------------- */
   function phone() {
     $('phone').hidden = false;
-    $('age').innerHTML = C.ageBands.map((a, i) => `<label class="chip"><input type="radio" name="age" value="${esc(a)}" id="age-${i}">${esc(a)}</label>`).join('');
-    $('eth').innerHTML = C.ethnicities.map((e, i) => `<label class="opt"><input type="radio" name="eth" value="${esc(e.value)}" id="eth-${i}"><span class="dot"></span><span><b>${esc(e.value)}</b>${e.examples ? `<small>For example ${esc(e.examples)}</small>` : ''}</span></label>`).join('');
+    $('age').innerHTML = '<option value="">Choose</option>' + C.ageBands.map((a) => `<option>${esc(a)}</option>`).join('');
+    $('eth').innerHTML = '<option value="">Choose one</option>' + C.ethnicities.map((e) => {
+      const eg = e.examples ? ` (e.g. ${e.examples.split(', ').slice(0, 3).join(', ')})` : '';
+      return `<option value="${esc(e.value)}">${esc(e.value + eg)}</option>`;
+    }).join('');
     for (const id of ['privacy', 'terms']) document.querySelector(`a[href="#${id}"]`).addEventListener('click', () => { $(id).open = true; });
 
     const ALPHABET = '23456789ABCDEFGHJKMNPQRSTUVWXYZ';
@@ -349,14 +356,14 @@
       $('msg').className = 'msg'; $('msg').textContent = '';
       const name = $('nick').value.replace(/\s+/g, ' ').trim();
       const email = $('email').value.trim().toLowerCase();
-      const age = document.querySelector('input[name=age]:checked')?.value;
-      const eth = document.querySelector('input[name=eth]:checked')?.value;
+      const age = $('age').value, eth = $('eth').value;
       const pc = $('pc').value.trim();
+      const org = $('org').value.replace(/\s+/g, ' ').trim();
       if (!name) return err('Please add a nickname. It is what shows on the big screen.', $('nick'));
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) return err('That email does not look right. We need it to tell you if you win.', $('email'));
-      if (!age) return err('Please choose an age group, or "Prefer not to say".', $('age-0'));
-      if (!eth) return err('Please choose a background, or "Prefer not to say".', $('eth-0'));
       if (!/^\d{4}$/.test(pc)) return err('Please enter a 4 digit postcode.', $('pc'));
+      if (!age) return err('Please choose an age group, or "Prefer not to say".', $('age'));
+      if (!eth) return err('Please choose a background, or "Prefer not to say".', $('eth'));
       if (!$('consent').checked) return err('Please tick the box to agree to the privacy note and draw terms.', $('consent'));
 
       const code = await entryCode(email);
@@ -365,7 +372,7 @@
 
       $('go').disabled = true; $('go').textContent = 'Sending…';
       try {
-        await post(C.privateForm, { nickname: name, email, age, ethnicity: eth, postcode: pc, code, consent: 'Yes' });
+        await post(C.privateForm, { nickname: name, email, age, ethnicity: eth, postcode: pc, organisation: org, citizenScience: $('citizen').checked ? 'Yes' : 'No', code, consent: 'Yes' });
         await post(C.wheelForm, { nickname: name, code });
         mine.push(code); store.set('ond-entered', mine);
         done(name, code, false);
