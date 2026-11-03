@@ -23,18 +23,18 @@ The form also collects the data City of Parramatta asked WSTI to report (see "Qu
 | Wheel Google Form (nickname + entry code only) | https://docs.google.com/forms/d/1-ALRGbr7uOM3ysLxOAmOiBwzyu8ozTOak8PXG4O2k6w/edit |
 
 The site links work once GitHub Pages is switched on (not yet, see "Open items").
-The form edit links only open for accounts Harsh has shared the forms with.
+The form edit links only open for accounts the forms are shared with (ask Harsh).
 
 ## Where the data goes
 
 ```
-Phone form ──► Private Google Form ──► every answer          (Harsh's WSTI Google account, never shared)
+Phone form ──► Private Google Form ──► every answer          (WSTI's general Google account, never shared)
            └─► Wheel Google Form   ──► nickname + entry code (its Sheet is "anyone with the link, viewer")
                                           │
                        Stage wheel ◄──────┘ reads that Sheet every 5 seconds
 ```
 
-- Both forms are owned by Harsh's WSTI Google account. Entries live in Google only: each form's **Responses** tab,
+- Both forms are owned by WSTI's general Google account (moved there 4 Nov; Harsh is an editor). Entries live in Google only: each form's **Responses** tab,
   and the Google Sheet each form fills once **Responses, Link to Sheets** is clicked.
 - **Nothing is stored in this repo or on GitHub.** GitHub Pages only serves the page.
 - To email a winner: the wheel shows "nickname + entry code". Find that entry code in the private form's responses.
