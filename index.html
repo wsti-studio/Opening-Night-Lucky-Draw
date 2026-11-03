@@ -185,9 +185,13 @@
         <label for="eth">Cultural or ethnic background</label>
         <select id="eth"></select>
       </div>
+      <div class="tick">
+        <input id="student" type="checkbox">
+        <label for="student">I'm a student</label>
+      </div>
       <div class="field">
-        <label for="org">Organisation, or uni or school <span class="hint">· optional</span></label>
-        <input id="org" type="text" maxlength="80" autocomplete="organization" placeholder="Where you work or study" enterkeyhint="done">
+        <label for="org"><span id="org-label">Organisation</span> <span class="hint">· optional</span></label>
+        <input id="org" type="text" maxlength="80" autocomplete="organization" placeholder="Where you work" enterkeyhint="done">
       </div>
       <div class="tick">
         <input id="citizen" type="checkbox">
@@ -350,6 +354,13 @@
     };
 
     $('pc').addEventListener('input', (e) => { e.target.value = e.target.value.replace(/\D/g, '').slice(0, 4); });
+    const studentFlip = () => {
+      const s = $('student').checked;
+      $('org-label').textContent = s ? 'Uni or school' : 'Organisation';
+      $('org').placeholder = s ? 'e.g. Western Sydney University' : 'Where you work';
+    };
+    $('student').addEventListener('change', studentFlip);
+    $('f').addEventListener('input', () => { if ($('msg').classList.contains('err')) { $('msg').className = 'msg'; $('msg').textContent = ''; } });
 
     $('f').addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -372,7 +383,7 @@
 
       $('go').disabled = true; $('go').textContent = 'Sending…';
       try {
-        await post(C.privateForm, { nickname: name, email, age, ethnicity: eth, postcode: pc, organisation: org, citizenScience: $('citizen').checked ? 'Yes' : 'No', code, consent: 'Yes' });
+        await post(C.privateForm, { nickname: name, email, age, ethnicity: eth, postcode: pc, student: $('student').checked ? 'Yes' : 'No', organisation: org, citizenScience: $('citizen').checked ? 'Yes' : 'No', code, consent: 'Yes' });
         await post(C.wheelForm, { nickname: name, code });
         mine.push(code); store.set('ond-entered', mine);
         done(name, code, false);
@@ -384,7 +395,7 @@
     });
 
     $('again').addEventListener('click', () => {
-      $('f').reset(); $('msg').textContent = '';
+      $('f').reset(); studentFlip(); $('msg').textContent = '';
       $('done').hidden = true; $('f').hidden = false; $('nick').focus();
     });
   }

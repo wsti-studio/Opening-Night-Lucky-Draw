@@ -12,6 +12,7 @@ window.DRAW = {
       age: "entry.396244247",
       ethnicity: "entry.656792466",
       postcode: "entry.1842845702",
+      student: "entry.734352397",
       organisation: "entry.782199548",
       citizenScience: "entry.843855419",
       code: "entry.400364344",
