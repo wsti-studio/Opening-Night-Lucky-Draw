@@ -75,10 +75,11 @@ data, and asks whether attendees would like to engage in potential future citize
 | I'm a student (tick) | No | Council: student data. Recorded as Yes or No |
 | Organisation, or Uni or school when ticked | No | Council: organisation data. The label flips with the student tick |
 | Citizen science interest (tick, unticked to start) | No | Council's citizen science question. Recorded as Yes or No |
+| WSTI event updates (tick, unticked to start) | No | Opt-in to WSTI's own event emails (Harsh, 4 Nov). Recorded as Yes or No. Only email people who said Yes |
 | Privacy note and draw terms (tick) | Yes | Consent |
 
 Private form columns, in order: Nickname, Email, Age band, Ethnicity, Postcode, Student, Organisation or place of study,
-Citizen science interest, Entry code, Agreed to privacy note and draw terms.
+Citizen science interest, WSTI event updates, Entry code, Agreed to privacy note and draw terms.
 
 To add a question: add it to the private form in Google Forms first, read its entry id (form menu, "Get pre-filled link",
 fill a test value, the link shows `entry.<number>`), add that id to `privateForm.fields` in `config.js`, then send the

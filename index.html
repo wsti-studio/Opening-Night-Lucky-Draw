@@ -200,6 +200,10 @@
         <label for="citizen">I'm interested in future citizen science programs with City of Parramatta.</label>
       </div>
       <div class="tick">
+        <input id="updates" type="checkbox">
+        <label for="updates">Send me updates about future WSTI events.</label>
+      </div>
+      <div class="tick">
         <input id="consent" type="checkbox">
         <label for="consent">I agree to the <a href="#privacy">privacy note</a> and <a href="#terms">draw terms</a>.</label>
       </div>
@@ -222,6 +226,7 @@
     <p>WSTI collects your details to run this lucky draw and to email you if you win. Your nickname shows on the big screen. Nothing else is ever shown.</p>
     <p>Your postcode, age group, background and organisation are collected for the City of Parramatta. WSTI reports them to Council as anonymised totals for each event and for the whole festival. You can choose "Prefer not to say" for age group and background.</p>
     <p>If you tick the citizen science box, <mark class="todo">[WSTI or Council]</mark> may contact you about future programs with Council. Leave it unticked and nobody will.</p>
+    <p>If you tick the WSTI events box, WSTI emails you about upcoming events. You can unsubscribe at any time.</p>
     <p>To see or remove your details, email <mark class="todo">[contact email]</mark>.</p>
   </details>
 
@@ -385,7 +390,7 @@
 
       $('go').disabled = true; $('go').textContent = 'Sending…';
       try {
-        await post(C.privateForm, { nickname: name, email, age, ethnicity: eth, postcode: pc, student: $('student').checked ? 'Yes' : 'No', organisation: org, citizenScience: $('citizen').checked ? 'Yes' : 'No', code, consent: 'Yes' });
+        await post(C.privateForm, { nickname: name, email, age, ethnicity: eth, postcode: pc, student: $('student').checked ? 'Yes' : 'No', organisation: org, citizenScience: $('citizen').checked ? 'Yes' : 'No', wstiUpdates: $('updates').checked ? 'Yes' : 'No', code, consent: 'Yes' });
         await post(C.wheelForm, { nickname: name, code });
         mine.push(code); store.set('ond-entered', mine);
         done(name, code, false);

@@ -15,6 +15,7 @@ window.DRAW = {
       student: "entry.734352397",
       organisation: "entry.782199548",
       citizenScience: "entry.843855419",
+      wstiUpdates: "entry.1476446007",
       code: "entry.400364344",
       consent: "entry.1510898614"
     }
