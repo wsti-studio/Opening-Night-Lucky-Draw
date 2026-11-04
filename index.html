@@ -67,7 +67,6 @@
   .done .label { margin: 14px 0 0; color: var(--muted); font-size: 13px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
   .done .code { margin: 2px 0 12px; font-size: 34px; font-weight: 900; letter-spacing: .12em; color: var(--amber); font-variant-numeric: tabular-nums; }
   .done p { color: var(--ink-2); margin: 0 0 16px; }
-  .ghost { font: 700 15px var(--font); background: transparent; color: var(--ink); border: 1px solid var(--line); border-radius: 12px; padding: 11px 16px; cursor: pointer; }
   details { border-top: 1px solid var(--line); padding-top: 12px; }
   details summary { cursor: pointer; font-weight: 800; }
   details p, details li { color: var(--ink-2); font-size: 14px; }
@@ -221,7 +220,6 @@
       <p class="label">Your entry code</p>
       <p class="code" id="done-code"></p>
       <p id="done-text">Watch the big screen. Five winners are drawn live on stage, and each winner gets their e-gift card by email.</p>
-      <button class="ghost" id="again" type="button">Enter someone else</button>
     </div>
   </section>
 
@@ -408,11 +406,6 @@
         err('That did not send. Please check your connection and try again.');
       }
       $('go').disabled = false; $('go').textContent = 'Enter the draw';
-    });
-
-    $('again').addEventListener('click', () => {
-      $('f').reset(); studentFlip(); $('msg').textContent = '';
-      $('done').hidden = true; $('f').hidden = false; $('nick').focus();
     });
   }
 
