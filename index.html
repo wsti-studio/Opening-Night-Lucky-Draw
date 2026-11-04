@@ -195,9 +195,10 @@
         <label for="student">I'm a student</label>
       </div>
       <div class="field">
-        <label for="org"><span id="org-label">Organisation</span> <span class="hint">· optional</span></label>
-        <input id="org" type="text" maxlength="80" autocomplete="organization" placeholder="Where you work" enterkeyhint="done">
+        <label for="org" id="org-label">Organisation</label>
+        <input id="org" type="text" maxlength="80" autocomplete="organization" placeholder="Where you work" enterkeyhint="done" aria-describedby="org-hint">
       </div>
+      <p class="sub" id="org-hint">You can write "None" if you prefer not to say.</p>
       <div class="tick">
         <input id="citizen" type="checkbox">
         <label for="citizen">I'm interested in future citizen science programs with City of Parramatta.</label>
@@ -389,6 +390,7 @@
       if (!/^\d{4}$/.test(pc)) return err('Please enter a 4 digit postcode.', $('pc'));
       if (!age) return err('Please choose an age group, or "Prefer not to say".', $('age'));
       if (!eth) return err('Please choose a background, or "Prefer not to say".', $('eth'));
+      if (!org) return err(`Please add your ${$('student').checked ? 'uni or school' : 'organisation'}, or write "None".`, $('org'));
       if (!$('consent').checked) return err('Please tick the box to agree to the privacy note and draw terms.', $('consent'));
 
       const code = await entryCode(email);

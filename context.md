@@ -73,7 +73,7 @@ data, and asks whether attendees would like to engage in potential future citize
 | Age group | Yes, "Prefer not to say" allowed | Council: age band. ABS Age Standard ten year groups, 15–24 to 75 and over |
 | Cultural or ethnic background | Yes, "Prefer not to say" allowed | Council: ethnicity. ABS ASCCEG 2025, the nine broad groups |
 | I'm a student (tick) | No | Council: student data. Recorded as Yes or No |
-| Organisation, or Uni or school when ticked | No | Council: organisation data. The label flips with the student tick |
+| Organisation, or Uni or school when ticked | Yes, "None" allowed | Council: organisation data. The label flips with the student tick. A line under it says they can write "None" (Harsh, 4 Nov) |
 | Citizen science interest (tick, unticked to start) | No | Council's citizen science question. Recorded as Yes or No |
 | WSTI event updates (tick, unticked to start) | No | Opt-in to WSTI's own event emails (Harsh, 4 Nov). Recorded as Yes or No. Only email people who said Yes |
 | Privacy note and draw terms (tick) | Yes | Consent |
