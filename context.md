@@ -16,13 +16,13 @@ The form also collects the data City of Parramatta asked WSTI to report (see "Qu
 | What | Link |
 |---|---|
 | Repo | https://github.com/wsti-studio/Opening-Night-Lucky-Draw |
-| Phone form (live site) | https://wsti-studio.github.io/Opening-Night-Lucky-Draw/ |
-| Stage wheel | https://wsti-studio.github.io/Opening-Night-Lucky-Draw/?stage |
-| Rehearsal wheel (100 test names, real entries untouched) | https://wsti-studio.github.io/Opening-Night-Lucky-Draw/?stage&demo |
+| Phone form (live site) | https://draw.wsti.org.au/ |
+| Stage wheel | https://draw.wsti.org.au/?stage&key=… (the key is the Railway variable `DRAW_KEY`, ask Frank, never commit it) |
+| Rehearsal wheel (100 test names, real entries untouched) | https://draw.wsti.org.au/?stage&demo |
 | Private Google Form (every answer) | https://docs.google.com/forms/d/14aUlqThf6npvFjzZUxZJGRuUhjzzv0J11Gs6-ylNs-Q/edit |
 | Wheel Google Form (nickname + entry code only) | https://docs.google.com/forms/d/1-ALRGbr7uOM3ysLxOAmOiBwzyu8ozTOak8PXG4O2k6w/edit |
 
-The site links work once GitHub Pages is switched on (not yet, see "Open items").
+The site runs on Railway (Frank, 4 Nov) and redeploys from `main` about a minute after a push.
 The form edit links only open for accounts the forms are shared with (ask Harsh).
 
 ## Where the data goes
@@ -36,7 +36,8 @@ Phone form ──► Private Google Form ──► every answer          (WSTI's
 
 - Both forms are owned by WSTI's general Google account (moved there 4 Nov; Harsh is an editor). Entries live in Google only: each form's **Responses** tab,
   and the Google Sheet each form fills once **Responses, Link to Sheets** is clicked.
-- **Nothing is stored in this repo or on GitHub.** GitHub Pages only serves the page.
+- **No entries are stored in this repo or on Railway.** Railway serves the page and keeps only the stage's winners list
+  (nickname + entry code, `/api/winners`, behind `DRAW_KEY`) so every stage laptop sees the same winners.
 - To email a winner: the wheel shows "nickname + entry code". Find that entry code in the private form's responses.
 
 ## How it works
@@ -101,7 +102,7 @@ Test locally with any static server, for example `python3 -m http.server 8000` i
 1. **Forms:** untick "Restrict to users in WSTI" on both forms (Settings, Responses). Until then, public entries are refused silently.
 2. **Sheets:** ✅ the wheel Sheet is linked and in `wheelSheetId` (Frank, 4 Nov; readable from the live site's origin).
    Still to check: the private form's Sheet is linked and NOT shared. Both Sheets should end up owned by WSTI's general account.
-3. **GitHub Pages:** Settings, Pages, branch `main`, folder `/ (root)`. The site returned 404 on 4 Nov.
+3. **Hosting:** ✅ live on Railway at https://draw.wsti.org.au/ (4 Nov). GitHub Pages is not used.
 4. **Page copy placeholders** (shown in orange on the phone page): the age limit (currently "[18] and over"),
    the contact email for privacy requests, and who contacts citizen science opt-ins (WSTI or Council).
    The prize is set: an e-gift card, emailed to each winner (Harsh, 4 Nov).
