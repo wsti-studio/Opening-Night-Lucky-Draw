@@ -98,11 +98,12 @@ Test locally with any static server, for example `python3 -m http.server 8000` i
 ## Open items (4 Nov)
 
 1. **Forms:** untick "Restrict to users in WSTI" on both forms (Settings, Responses). Until then, public entries are refused silently.
-2. **Sheets:** Responses, Link to Sheets on both forms. Share only the **wheel** Sheet as "anyone with the link, viewer",
-   and put its id in `wheelSheetId` in `config.js`. Until then, the wheel says "Not connected".
+2. **Sheets:** ✅ the wheel Sheet is linked and in `wheelSheetId` (Frank, 4 Nov; readable from the live site's origin).
+   Still to check: the private form's Sheet is linked and NOT shared. Both Sheets should end up owned by WSTI's general account.
 3. **GitHub Pages:** Settings, Pages, branch `main`, folder `/ (root)`. The site returned 404 on 4 Nov.
-4. **Page copy placeholders** (shown in orange on the phone page): the prize, the age limit (currently "[18] and over"),
+4. **Page copy placeholders** (shown in orange on the phone page): the age limit (currently "[18] and over"),
    the contact email for privacy requests, and who contacts citizen science opt-ins (WSTI or Council).
+   The prize is set: an e-gift card, emailed to each winner (Harsh, 4 Nov).
 5. **One real end-to-end test** from a phone before the night: check both forms' responses and watch the name land on the wheel.
 
 ## House rules for this project

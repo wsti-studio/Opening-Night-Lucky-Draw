@@ -47,6 +47,7 @@
   .pair { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr); gap: 10px; margin-top: 12px; }
   .pair .field { margin-top: 0; }
   .sub { margin: 4px 0 0; color: var(--muted); font-size: 13px; }
+  .note { margin: 0 0 14px; padding: 10px 12px; border-radius: 12px; background: rgba(24,203,150,.12); border: 1px solid rgba(24,203,150,.28); color: var(--ink-2); font-size: 13px; line-height: 1.45; }
   input[type=text], input[type=email], select { width: 100%; font: inherit; font-size: 16px; color: var(--ink); background-color: rgba(0,0,0,.28); border: 1px solid var(--line); border-radius: 12px; padding: 12px 13px; }
   select { appearance: none; -webkit-appearance: none; padding-right: 34px; text-overflow: ellipsis; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23F0A830' stroke-width='2'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; background-size: 12px; }
   select:has(option[value=""]:checked) { color: var(--muted); }
@@ -157,17 +158,18 @@
     <img class="logo" src="festi-logo.svg" alt="WSTI Festi" width="1825" height="316">
     <p class="eyebrow">Opening Night · Thursday 5 November</p>
     <h1>Lucky draw</h1>
-    <p class="lede">Win <mark class="todo">[prize]</mark>. Five winners are drawn live on stage tonight.</p>
+    <p class="lede">Win an e-gift card. Five winners are drawn live on stage tonight.</p>
   </header>
 
   <section class="card" id="form-card">
     <form id="f" novalidate>
+      <p class="note">We ask these questions at the request of City of Parramatta Council. Council receives the answers as anonymised totals.</p>
       <div class="field">
         <label for="nick">Nickname <span class="hint">· shown on screen</span></label>
         <input id="nick" type="text" maxlength="20" autocomplete="nickname" placeholder="e.g. Sam" enterkeyhint="next">
       </div>
       <div class="field">
-        <label for="email">Email <span class="hint">· if you win</span></label>
+        <label for="email">Email <span class="hint">· we send your e-gift card here if you win</span></label>
         <input id="email" type="email" inputmode="email" autocomplete="email" autocapitalize="off" spellcheck="false" placeholder="you@example.com" enterkeyhint="next">
       </div>
       <div class="pair">
@@ -210,7 +212,7 @@
       <h2 id="done-title">You're in!</h2>
       <p class="label">Your entry code</p>
       <p class="code" id="done-code"></p>
-      <p id="done-text">Watch the big screen. Five winners are drawn live on stage, and we email every winner.</p>
+      <p id="done-text">Watch the big screen. Five winners are drawn live on stage, and each winner gets their e-gift card by email.</p>
       <button class="ghost" id="again" type="button">Enter someone else</button>
     </div>
   </section>
@@ -218,7 +220,7 @@
   <details id="privacy">
     <summary>Privacy note</summary>
     <p>WSTI collects your details to run this lucky draw and to email you if you win. Your nickname shows on the big screen. Nothing else is ever shown.</p>
-    <p>Your postcode, age group, background and organisation are collected for the City of Parramatta. WSTI reports them to Council as totals for each event and for the whole festival. You can choose "Prefer not to say" for age group and background.</p>
+    <p>Your postcode, age group, background and organisation are collected for the City of Parramatta. WSTI reports them to Council as anonymised totals for each event and for the whole festival. You can choose "Prefer not to say" for age group and background.</p>
     <p>If you tick the citizen science box, <mark class="todo">[WSTI or Council]</mark> may contact you about future programs with Council. Leave it unticked and nobody will.</p>
     <p>To see or remove your details, email <mark class="todo">[contact email]</mark>.</p>
   </details>
@@ -229,7 +231,7 @@
       <li>Five winners are drawn at random on stage at WSTI Festi Opening Night, Thursday 5 November 2026.</li>
       <li>One entry per person. Entries with the same email count once.</li>
       <li>Open to people aged <mark class="todo">[18]</mark> and over.</li>
-      <li>Prize: <mark class="todo">[prize]</mark>. We email winners after the event.</li>
+      <li>Prize: an e-gift card, emailed to each winner after the event.</li>
       <li>WSTI can redraw if an entry is not eligible.</li>
     </ul>
   </details>
@@ -348,7 +350,7 @@
       $('done-code').textContent = code;
       $('done-text').textContent = already
         ? 'This email is already in the draw. One entry each. Watch the big screen for the winners.'
-        : 'Watch the big screen. Five winners are drawn live on stage, and we email every winner.';
+        : 'Watch the big screen. Five winners are drawn live on stage, and each winner gets their e-gift card by email.';
       $('f').hidden = true; $('done').hidden = false;
       $('form-card').scrollIntoView({ behavior: calm ? 'auto' : 'smooth', block: 'center' });
     };
