@@ -3,8 +3,9 @@
 WSTI Festi 2026 Opening Night, Thursday 5 November. Built 3 November 2026.
 
 - **Phone form:** the site link. People scan the QR on the big screen.
-- **Wheel for the stage:** the site link with `?stage&key=…` on the end. The key is the Railway variable `DRAW_KEY`
-  (ask Frank; never commit it). Without the key the wheel still works, but winners are kept on that laptop only.
+- **Wheel for the stage:** the site link with `?stage` on the end. It asks for the admin username and password, which are the
+  Railway variables `ADMIN_USER` and `ADMIN_PASSWORD` (never commit them). The link itself carries nothing secret, so it is
+  safe on a shared screen. The login lasts 12 hours; **Log out** (top right) ends it sooner.
 - **Rehearsal:** `?stage&demo` fills the wheel with 100 test names. Real entries are not touched.
 
 ## How the data moves
@@ -31,7 +32,7 @@ and only counts once on the wheel. To email a winner, find their code in the pri
 
 ## On the night (Lailei)
 
-1. Open the `?stage` link on the stage laptop and click **Full screen**.
+1. Open the `?stage` link on the stage laptop, log in, and click **Full screen**.
 2. People scan the QR. Names land on the wheel by themselves, with a pop-up for each one.
 3. When it's time, click **Close entries** so the wheel stops changing.
 4. Click **SPIN** (or press the space bar or the clicker). The winner shows big with their entry code.
@@ -50,6 +51,7 @@ Delete that row in the wheel Sheet. It leaves the wheel within 5 seconds.
 ## Files
 
 - `index.html`: the phone form and the wheel
-- `server.js`: serves the site and stores the winners (`/api/winners`, needs the key). Railway runs `npm start`
+- `server.js`: serves the site and stores the winners (`/api/winners`, needs the admin login). Railway runs `npm start`
+- `admin.js`: the admin login (username and password from `ADMIN_USER` and `ADMIN_PASSWORD`, a signed cookie for 12 hours)
 - `config.js`: form addresses, the wheel Sheet id, the age and background options (ABS)
 - `festi-logo.svg`: WSTI Festi logo

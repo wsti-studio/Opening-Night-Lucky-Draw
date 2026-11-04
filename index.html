@@ -48,7 +48,7 @@
   .pair .field { margin-top: 0; }
   .sub { margin: 4px 0 0; color: var(--muted); font-size: 13px; }
   .note { margin: 0 0 14px; padding: 10px 12px; border-radius: 12px; background: rgba(24,203,150,.12); border: 1px solid rgba(24,203,150,.28); color: var(--ink-2); font-size: 13px; line-height: 1.45; }
-  input[type=text], input[type=email], select { width: 100%; font: inherit; font-size: 16px; color: var(--ink); background-color: rgba(0,0,0,.28); border: 1px solid var(--line); border-radius: 12px; padding: 12px 13px; }
+  input[type=text], input[type=email], input[type=password], select { width: 100%; font: inherit; font-size: 16px; color: var(--ink); background-color: rgba(0,0,0,.28); border: 1px solid var(--line); border-radius: 12px; padding: 12px 13px; }
   select { appearance: none; -webkit-appearance: none; padding-right: 34px; text-overflow: ellipsis; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23F0A830' stroke-width='2'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; background-size: 12px; }
   select:has(option[value=""]:checked) { color: var(--muted); }
   input::placeholder { color: var(--muted); }
@@ -113,6 +113,12 @@
   .tool { font: 700 14px var(--font); color: var(--ink-2); background: transparent; border: 1px solid var(--line); border-radius: 10px; padding: 8px 12px; cursor: pointer; }
   .tool:hover { color: var(--ink); border-color: var(--ink-2); }
   .tool.armed { color: var(--night); background: var(--danger); border-color: var(--danger); }
+  .login { position: fixed; inset: 0; z-index: 60; display: grid; place-items: center; padding: 24px 16px; overflow: auto; background: var(--night); }
+  .login .card { width: min(440px, 100%); }
+  .login .logo { width: min(240px, 70%); height: auto; display: block; margin-bottom: 10px; }
+  .login h1 { margin: 2px 0 4px; font-size: 32px; font-weight: 900; }
+  .show-pass { display: flex; align-items: center; gap: 10px; margin-top: 12px; font-size: 15px; color: var(--ink-2); }
+  .show-pass input { width: 20px; height: 20px; accent-color: var(--amber); }
   .demo-flag { align-self: flex-start; font-size: 13px; font-weight: 900; letter-spacing: .1em; text-transform: uppercase; color: var(--night); background: var(--amber); border-radius: 8px; padding: 4px 10px; }
 
   .arena { min-width: 0; min-height: 0; display: grid; grid-template-rows: minmax(0, 1fr) auto; justify-items: center; align-items: center; gap: 1.2vh; }
@@ -275,6 +281,7 @@
       <button class="tool" id="t-full" type="button">Full screen</button>
       <button class="tool" id="t-copy" type="button">Copy winners</button>
       <button class="tool" id="t-reset" type="button">Reset draw</button>
+      <button class="tool" id="t-logout" type="button">Log out</button>
     </div>
   </aside>
 
@@ -287,6 +294,26 @@
     <div class="ticker quiet" id="ticker" aria-live="polite">Scan the code to enter</div>
   </section>
 </main>
+
+<!-- Admin login for the real stage (the rehearsal needs none) -->
+<div class="login" id="login" hidden>
+  <form class="card" id="login-form" novalidate>
+    <img class="logo" src="festi-logo.svg" alt="WSTI Festi" width="1825" height="316">
+    <p class="eyebrow">Lucky draw · stage</p>
+    <h1>Log in</h1>
+    <div class="field">
+      <label for="login-user">Username</label>
+      <input type="text" id="login-user" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false" required>
+    </div>
+    <div class="field">
+      <label for="login-pass">Password</label>
+      <input type="password" id="login-pass" autocomplete="current-password" required>
+    </div>
+    <label class="show-pass"><input type="checkbox" id="login-show"> Show password</label>
+    <p class="msg err" id="login-err" role="alert" hidden></p>
+    <button class="go" id="login-go" type="submit">Log in</button>
+  </form>
+</div>
 
 <div class="reveal" id="reveal" hidden role="dialog" aria-modal="true" aria-labelledby="rv-name">
   <div class="box">
@@ -329,7 +356,33 @@
     }
   }
 
-  if (isStage) stage(); else phone();
+  if (!isStage) phone();
+  else if (isDemo) stage();
+  else fetch('/api/session', { cache: 'no-store' }).then((r) => r.json()).then((s) => (s.admin ? stage() : askLogin(stage))).catch(() => askLogin(stage));
+
+  /* ---------------- Admin login ---------------- */
+  // The server checks the username and password and sets a cookie the page cannot read,
+  // so the stage link carries nothing secret.
+  function askLogin(onDone) {
+    $('login').hidden = false;
+    if (!$('login-user').value) $('login-user').focus();
+    $('login-show').onchange = () => { $('login-pass').type = $('login-show').checked ? 'text' : 'password'; };
+    $('login-form').onsubmit = async (e) => {
+      e.preventDefault();
+      const go = $('login-go'), err = $('login-err');
+      go.disabled = true; go.textContent = 'Checking…'; err.hidden = true;
+      try {
+        const r = await fetch('/api/login', { method: 'POST', cache: 'no-store', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ user: $('login-user').value.trim(), password: $('login-pass').value }) });
+        const data = await r.json().catch(() => ({}));
+        if (r.ok) { $('login-pass').value = ''; $('login').hidden = true; onDone(); }
+        else { err.textContent = data.error || 'That did not work. Please try again.'; err.hidden = false; }
+      } catch (e2) {
+        err.textContent = 'No connection. Please check the internet and try again.'; err.hidden = false;
+      } finally {
+        go.disabled = false; go.textContent = 'Log in';
+      }
+    };
+  }
 
   /* ---------------- Phone ---------------- */
   function phone() {
@@ -421,8 +474,8 @@
     let closed = !!saved.closed, muted = !!saved.muted;
     const entries = new Map();
     let firstLoad = true, spinning = false, rot = 0, lastOk = 0, lastErr = '', open = null, list = [];
-    // Winners are also kept on the server when the stage link carries ?key=
-    const drawKey = isDemo ? '' : (params.get('key') || '');
+    // Winners are also kept on the server (real stage only, behind the admin login)
+    const online = !isDemo;
     let pushed = JSON.stringify(winners);
     const save = () => {
       store.set(KEY, { winners, hidden: [...hidden], closed, muted });
@@ -432,21 +485,29 @@
     async function serverWinners(method, body) {
       const r = await fetch('/api/winners', {
         method, cache: 'no-store',
-        headers: body ? { 'X-Draw-Key': drawKey, 'Content-Type': 'application/json' } : { 'X-Draw-Key': drawKey },
+        headers: body ? { 'Content-Type': 'application/json' } : {},
         body: body ? JSON.stringify(body) : undefined
       });
+      if (r.status === 403) relogin();
       if (!r.ok) throw new Error(`HTTP ${r.status}`);
       return (await r.json()).winners;
     }
     const savedNote = (online) => { $('saved').textContent = isDemo ? '' : online ? 'Saved online' : 'This laptop only'; };
+    // Logged out mid-draw (the login lasts 12 hours): log in again, then send this laptop's winners.
+    let relogging = false;
+    function relogin() {
+      if (relogging) return;
+      relogging = true;
+      askLogin(() => { relogging = false; pushed = ''; save(); });
+    }
     function pushWinners() {
-      if (!drawKey) return;
+      if (!online) return;
       serverWinners('PUT', { winners }).then(() => savedNote(true))
         .catch(() => { savedNote(false); toast('Could not save winners online. They are kept on this laptop.'); });
     }
     async function loadWinners() {
       savedNote(false);
-      if (!drawKey) return;
+      if (!online) return;
       try {
         winners = await serverWinners('GET');
         pushed = JSON.stringify(winners);
@@ -740,6 +801,11 @@
       clearTimeout(armed); armed = 0; b.classList.remove('armed'); b.textContent = 'Reset draw';
       winners = []; hidden.clear(); closed = false; rot = 0; save(); paint(); poll();
       toast('Draw reset');
+    });
+    $('t-logout').hidden = isDemo;
+    $('t-logout').addEventListener('click', async () => {
+      try { await fetch('/api/logout', { method: 'POST' }); } catch (e) {}
+      location.reload();
     });
     let clearArmed = 0;
     $('t-clear').addEventListener('click', () => {

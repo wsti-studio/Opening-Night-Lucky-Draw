@@ -2,16 +2,15 @@
 // a reload, a browser change or a different laptop. No dependencies.
 //
 // Winners live in WINNERS_FILE (a Railway volume at /data in production).
-// Reading or changing them needs DRAW_KEY, which the stage link carries as ?key=.
+// Reading or changing them needs the admin login (admin.js: ADMIN_USER and ADMIN_PASSWORD).
 
 const http = require('node:http');
 const fs = require('node:fs');
 const path = require('node:path');
-const crypto = require('node:crypto');
+const admin = require('./admin');
 
 const ROOT = __dirname;
 const PORT = Number(process.env.PORT) || 8080;
-const KEY = process.env.DRAW_KEY || '';
 const FILE = process.env.WINNERS_FILE || path.join(ROOT, 'data', 'winners.json');
 const MAX_WINNERS = 5;
 
@@ -36,18 +35,13 @@ function clean(list) {
     at: String(w?.at ?? '').slice(0, 40),
   })).filter((w) => w.name && w.code);
 }
-function keyOk(req) {
-  const given = Buffer.from(String(req.headers['x-draw-key'] || ''));
-  const want = Buffer.from(KEY);
-  return KEY !== '' && given.length === want.length && crypto.timingSafeEqual(given, want);
-}
 function json(res, status, body) {
   res.writeHead(status, { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' });
   res.end(JSON.stringify(body));
 }
 
 async function api(req, res) {
-  if (!keyOk(req)) return json(res, 403, { error: 'Wrong or missing key' });
+  if (!admin.isAdmin(req)) return json(res, 403, { error: 'Please log in' });
   if (req.method === 'GET') return json(res, 200, { winners: readWinners() });
   if (req.method === 'DELETE') { writeWinners([]); return json(res, 200, { winners: [] }); }
   if (req.method === 'PUT') {
@@ -65,6 +59,7 @@ async function api(req, res) {
 http.createServer((req, res) => {
   const url = new URL(req.url, 'http://x');
   if (url.pathname === '/api/winners') return void api(req, res).catch(() => json(res, 500, { error: 'Server error' }));
+  if (admin.routes[url.pathname]) return void Promise.resolve(admin.routes[url.pathname](req, res)).catch(() => json(res, 500, { error: 'Server error' }));
   if (req.method !== 'GET' && req.method !== 'HEAD') { res.writeHead(405); return res.end(); }
   const name = url.pathname === '/' ? 'index.html' : url.pathname.slice(1);
   if (!PUBLIC.has(name)) { res.writeHead(404, { 'Content-Type': 'text/plain' }); return res.end('Not found'); }
@@ -73,4 +68,4 @@ http.createServer((req, res) => {
     res.writeHead(200, { 'Content-Type': TYPES[path.extname(name)] || 'application/octet-stream', 'Cache-Control': 'no-cache' });
     res.end(req.method === 'HEAD' ? undefined : data);
   });
-}).listen(PORT, () => console.log(`Lucky draw on port ${PORT}; winners file ${FILE}; key ${KEY ? 'set' : 'NOT set'}`));
+}).listen(PORT, () => console.log(`Lucky draw on port ${PORT}; winners file ${FILE}; admin login ${admin.ready ? 'set' : 'NOT set'}`));

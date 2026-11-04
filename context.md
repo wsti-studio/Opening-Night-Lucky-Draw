@@ -17,7 +17,7 @@ The form also collects the data City of Parramatta asked WSTI to report (see "Qu
 |---|---|
 | Repo | https://github.com/wsti-studio/Opening-Night-Lucky-Draw |
 | Phone form (live site) | https://draw.wsti.org.au/ |
-| Stage wheel | https://draw.wsti.org.au/?stage&key=… (the key is the Railway variable `DRAW_KEY`, ask Frank, never commit it) |
+| Stage wheel | https://draw.wsti.org.au/?stage, then log in (Railway variables `ADMIN_USER` and `ADMIN_PASSWORD`, never commit them). Replaced the `?key=` link on 4 Nov because stage links get shown in public. |
 | Rehearsal wheel (100 test names, real entries untouched) | https://draw.wsti.org.au/?stage&demo |
 | Private Google Form (every answer) | https://docs.google.com/forms/d/14aUlqThf6npvFjzZUxZJGRuUhjzzv0J11Gs6-ylNs-Q/edit |
 | Wheel Google Form (nickname + entry code only) | https://docs.google.com/forms/d/1-ALRGbr7uOM3ysLxOAmOiBwzyu8ozTOak8PXG4O2k6w/edit |
@@ -37,7 +37,8 @@ Phone form ──► Private Google Form ──► every answer          (WSTI's
 - Both forms are owned by WSTI's general Google account (moved there 4 Nov; Harsh is an editor). Entries live in Google only: each form's **Responses** tab,
   and the Google Sheet each form fills once **Responses, Link to Sheets** is clicked.
 - **No entries are stored in this repo or on Railway.** Railway serves the page and keeps only the stage's winners list
-  (nickname + entry code, `/api/winners`, behind `DRAW_KEY`) so every stage laptop sees the same winners.
+  (nickname + entry code, `/api/winners`, behind the admin login in `admin.js`) so every stage laptop sees the same winners.
+  `admin.js` is the same file as in wsti-studio/Ask-the-Panel: change both together. `DRAW_KEY` is no longer used.
 - To email a winner: the wheel shows "nickname + entry code". Find that entry code in the private form's responses.
 
 ## How it works
