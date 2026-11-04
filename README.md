@@ -3,7 +3,8 @@
 WSTI Festi 2026 Opening Night, Thursday 5 November. Built 3 November 2026.
 
 - **Phone form:** the site link. People scan the QR on the big screen.
-- **Wheel for the stage:** the site link with `?stage` on the end.
+- **Wheel for the stage:** the site link with `?stage&key=…` on the end. The key is the Railway variable `DRAW_KEY`
+  (ask Frank; never commit it). Without the key the wheel still works, but winners are kept on that laptop only.
 - **Rehearsal:** `?stage&demo` fills the wheel with 100 test names. Real entries are not touched.
 
 ## How the data moves
@@ -38,7 +39,9 @@ and only counts once on the wheel. To email a winner, find their code in the pri
    - **Not eligible, redraw** removes them without counting them.
 5. After five winners, click **Copy winners** and send the list to whoever emails the prizes.
 
-Winners are remembered on that laptop, so a page reload does not lose them. **Reset draw** (click twice) clears them.
+Winners are saved on the server (a Railway volume), so a reload, another browser or another laptop shows the same list.
+The Winners heading says **Saved online** when this works. **Clear** next to it (click twice) empties the list;
+**Reset draw** (click twice) also clears removed names and reopens entries.
 
 ## If a rude nickname comes in
 
@@ -47,5 +50,6 @@ Delete that row in the wheel Sheet. It leaves the wheel within 5 seconds.
 ## Files
 
 - `index.html`: the phone form and the wheel
+- `server.js`: serves the site and stores the winners (`/api/winners`, needs the key). Railway runs `npm start`
 - `config.js`: form addresses, the wheel Sheet id, the age and background options (ABS)
 - `festi-logo.svg`: WSTI Festi logo

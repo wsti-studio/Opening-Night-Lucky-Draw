@@ -95,13 +95,16 @@
   .pill.closed { background: rgba(255,255,255,.1); color: var(--ink-2); }
   .pill.warn { background: rgba(255,138,122,.16); color: var(--danger); }
   .status { margin: 6px 0 0; color: var(--muted); font-size: 14px; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; }
-  .winners h2 { margin: 0 0 8px; font-size: clamp(18px, 1.4vw, 26px); font-weight: 900; }
+  .winners-head { display: flex; align-items: center; gap: 10px; margin: 0 0 8px; }
+  .winners h2 { margin: 0; font-size: clamp(18px, 1.4vw, 26px); font-weight: 900; }
+  .winners-head .saved { color: var(--muted); font-size: 13px; }
+  .winners-head .tool { margin-left: auto; padding: 4px 10px; font-size: 13px; }
   .winners ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
-  .winners li { display: grid; grid-template-columns: 2em minmax(0, 1fr) auto; gap: 10px; align-items: center; border: 1px solid var(--line); border-radius: 12px; padding: 0.55vh 12px; font-size: clamp(14px, min(1.25vw, 2.1vh), 24px); }
+  .winners li { display: grid; grid-template-columns: 2em minmax(0, max-content) 1fr; gap: 10px; align-items: center; border: 1px solid var(--line); border-radius: 12px; padding: 0.55vh 12px; font-size: clamp(14px, min(1.25vw, 2.1vh), 24px); }
   .winners li .n { font-weight: 900; color: var(--muted); font-variant-numeric: tabular-nums; }
   .winners li b { font-weight: 900; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .winners li i { color: var(--muted); font-style: normal; }
-  .winners li code { font: 800 .8em var(--font); letter-spacing: .1em; color: var(--ink-2); }
+  .winners li code { justify-self: start; font: 800 .8em var(--font); letter-spacing: .1em; color: var(--ink-2); }
   .winners li.won { border-color: var(--amber); background: rgba(240,168,48,.12); }
   .winners li.won .n { color: var(--amber); }
   .tools { position: fixed; right: max(16px, env(safe-area-inset-right, 0px)); top: max(14px, env(safe-area-inset-top, 0px)); z-index: 20; display: flex; flex-direction: column; align-items: flex-end; gap: 6px; opacity: .55; transition: opacity .2s; }
@@ -259,7 +262,11 @@
       <p class="status"><span class="pill" id="pill">Entries open</span> <span id="status">Connecting…</span></p>
     </div>
     <div class="winners">
-      <h2>Winners</h2>
+      <div class="winners-head">
+        <h2>Winners</h2>
+        <span class="saved" id="saved"></span>
+        <button class="tool" id="t-clear" type="button">Clear</button>
+      </div>
       <ol id="winners"></ol>
     </div>
     <div class="tools">
@@ -418,7 +425,39 @@
     let closed = !!saved.closed, muted = !!saved.muted;
     const entries = new Map();
     let firstLoad = true, spinning = false, rot = 0, lastOk = 0, lastErr = '', open = null, list = [];
-    const save = () => store.set(KEY, { winners, hidden: [...hidden], closed, muted });
+    // Winners are also kept on the server when the stage link carries ?key=
+    const drawKey = isDemo ? '' : (params.get('key') || '');
+    let pushed = JSON.stringify(winners);
+    const save = () => {
+      store.set(KEY, { winners, hidden: [...hidden], closed, muted });
+      const now = JSON.stringify(winners);
+      if (now !== pushed) { pushed = now; pushWinners(); }
+    };
+    async function serverWinners(method, body) {
+      const r = await fetch('/api/winners', {
+        method, cache: 'no-store',
+        headers: body ? { 'X-Draw-Key': drawKey, 'Content-Type': 'application/json' } : { 'X-Draw-Key': drawKey },
+        body: body ? JSON.stringify(body) : undefined
+      });
+      if (!r.ok) throw new Error(`HTTP ${r.status}`);
+      return (await r.json()).winners;
+    }
+    const savedNote = (online) => { $('saved').textContent = isDemo ? '' : online ? 'Saved online' : 'This laptop only'; };
+    function pushWinners() {
+      if (!drawKey) return;
+      serverWinners('PUT', { winners }).then(() => savedNote(true))
+        .catch(() => { savedNote(false); toast('Could not save winners online. They are kept on this laptop.'); });
+    }
+    async function loadWinners() {
+      savedNote(false);
+      if (!drawKey) return;
+      try {
+        winners = await serverWinners('GET');
+        pushed = JSON.stringify(winners);
+        store.set(KEY, { winners, hidden: [...hidden], closed, muted });
+        savedNote(true); paint();
+      } catch (e) { toast('Could not load winners from the server. Using this laptop’s copy.'); }
+    }
     const isWinner = (code) => winners.some((w) => w.code === code);
     const pool = () => [...entries.values()].filter((p) => !hidden.has(p.code) && !isWinner(p.code));
     const mod = (a, m) => ((a % m) + m) % m;
@@ -706,10 +745,23 @@
       winners = []; hidden.clear(); closed = false; rot = 0; save(); paint(); poll();
       toast('Draw reset');
     });
+    let clearArmed = 0;
+    $('t-clear').addEventListener('click', () => {
+      const b = $('t-clear');
+      if (!clearArmed) {
+        b.classList.add('armed'); b.textContent = 'Click again';
+        clearArmed = setTimeout(() => { clearArmed = 0; b.classList.remove('armed'); b.textContent = 'Clear'; }, 4000);
+        return;
+      }
+      clearTimeout(clearArmed); clearArmed = 0; b.classList.remove('armed'); b.textContent = 'Clear';
+      winners = []; save(); paint();
+      toast('Winners cleared');
+    });
 
     new ResizeObserver(resize).observe($('wheel-box'));
     if (document.fonts) document.fonts.ready.then(paint);
     resize();
+    loadWinners();
     poll();
     setInterval(poll, 5000);
   }
