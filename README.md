@@ -1,6 +1,6 @@
-# Opening Night Lucky Draw
+# WSTI Festi Lucky Draw
 
-WSTI Festi 2026 Opening Night, Thursday 5 November. Built 3 November 2026.
+The lucky draw for WSTI Festi events. Built 3 November 2026 for Opening Night (Thursday 5 November), renamed 10 November 2026 for upcoming events.
 
 - **Phone form:** the site link. People scan the QR on the big screen.
 - **Wheel for the stage:** the site link with `?stage` on the end. It asks for the admin username and password, which are the

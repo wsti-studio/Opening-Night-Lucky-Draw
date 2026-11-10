@@ -1,11 +1,12 @@
-# Context: Opening Night Lucky Draw
+# Context: WSTI Festi Lucky Draw
 
 For anyone picking this up, people or AI assistants. Read this first, then `README.md` for the on-the-night steps.
 Status as of Wednesday 4 November 2026.
 
 ## What this is
 
-The lucky draw for **WSTI Festi 2026 Opening Night, Thursday 5 November 2026**. People scan a QR code, fill in a short
+The lucky draw for **WSTI Festi 2026 events**. First used at Opening Night, Thursday 5 November 2026, and renamed
+on 10 November 2026 so it can run at upcoming events. People scan a QR code, fill in a short
 form on their phone, and their nickname lands on a wheel on the big screen. Lailei spins it on stage. Five winners,
 and each winner gets their prize by email after the event.
 

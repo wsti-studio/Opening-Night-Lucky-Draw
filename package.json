@@ -1,7 +1,7 @@
 {
-  "name": "opening-night-lucky-draw",
+  "name": "wsti-festi-lucky-draw",
   "private": true,
-  "description": "WSTI Festi Opening Night lucky draw: phone form, stage wheel, winners kept on the server",
+  "description": "WSTI Festi Lucky Draw: phone form, stage wheel, winners kept on the server",
   "scripts": {
     "start": "node server.js"
   },
