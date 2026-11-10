@@ -7,7 +7,7 @@ Status as of Wednesday 4 November 2026.
 
 The lucky draw for **WSTI Festi 2026 events**. First used at Opening Night, Thursday 5 November 2026, and renamed
 on 10 November 2026 so it can run at upcoming events. People scan a QR code, fill in a short
-form on their phone, and their nickname lands on a wheel on the big screen. Lailei spins it on stage. Five winners,
+form on their phone, and their nickname lands on a wheel on the big screen. Lailei spins it on stage. Three winners,
 and each winner gets their prize by email after the event.
 
 The form also collects the data City of Parramatta asked WSTI to report (see "Questions and why" below).

@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>WSTI Festi Lucky Draw</title>
-<meta name="description" content="Enter the WSTI Festi lucky draw. Five winners are drawn live on stage.">
+<meta name="description" content="Enter the WSTI Festi lucky draw. Three winners are drawn live on stage.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;700;800;900&display=swap">
@@ -166,7 +166,7 @@
   <header>
     <img class="logo" src="festi-logo.svg" alt="WSTI Festi" width="1825" height="316">
     <h1>Lucky Draw Check-in</h1>
-    <p class="lede">Win an e-gift card. Five winners are drawn live on stage.</p>
+    <p class="lede">Win an e-gift card. Three winners are drawn live on stage.</p>
   </header>
 
   <section class="card" id="form-card">
@@ -225,7 +225,7 @@
       <h2 id="done-title">You're in!</h2>
       <p class="label">Your entry code</p>
       <p class="code" id="done-code"></p>
-      <p id="done-text">Watch the big screen. Five winners are drawn live on stage, and each winner gets their e-gift card by email.</p>
+      <p id="done-text">Watch the big screen. Three winners are drawn live on stage, and each winner gets their e-gift card by email.</p>
     </div>
   </section>
 
@@ -241,7 +241,7 @@
   <details id="terms">
     <summary>Draw terms</summary>
     <ul>
-      <li>Five winners are drawn at random on stage at this WSTI Festi event.</li>
+      <li>Three winners are drawn at random on stage at this WSTI Festi event.</li>
       <li>One entry per person. Entries with the same email count once.</li>
       <li>Open to people aged <mark class="todo">[18]</mark> and over.</li>
       <li>Prize: an e-gift card, emailed to each winner after the event.</li>
@@ -414,7 +414,7 @@
       $('done-code').textContent = code;
       $('done-text').textContent = already
         ? 'This email is already in the draw. One entry each. Watch the big screen for the winners.'
-        : 'Watch the big screen. Five winners are drawn live on stage, and each winner gets their e-gift card by email.';
+        : 'Watch the big screen. Three winners are drawn live on stage, and each winner gets their e-gift card by email.';
       $('f').hidden = true; $('done').hidden = false;
       $('form-card').scrollIntoView({ behavior: calm ? 'auto' : 'smooth', block: 'center' });
     };
@@ -630,7 +630,7 @@
       $('t-sound').textContent = muted ? 'Sound off' : 'Sound on';
       if (!spinning) {
         const t = $('ticker');
-        if (finished) { t.className = 'ticker'; t.textContent = 'Congratulations to all five winners!'; }
+        if (finished) { t.className = 'ticker'; t.textContent = 'Congratulations to all three winners!'; }
         else if (!list.length) { t.className = 'ticker quiet'; t.textContent = 'Scan the code to enter'; }
         else { t.className = 'ticker quiet'; t.textContent = winners.length ? `Ready for winner ${winners.length + 1}` : 'Ready to spin'; }
       }

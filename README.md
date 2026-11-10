@@ -38,7 +38,7 @@ and only counts once on the wheel. To email a winner, find their code in the pri
 4. Click **SPIN** (or press the space bar or the clicker). The winner shows big with their entry code.
    - **Confirm winner** keeps them and takes them off the wheel.
    - **Not eligible, redraw** removes them without counting them.
-5. After five winners, click **Copy winners** and send the list to whoever emails the prizes.
+5. After three winners, click **Copy winners** and send the list to whoever emails the prizes.
 
 Winners are saved on the server (a Railway volume), so a reload, another browser or another laptop shows the same list.
 The Winners heading says **Saved online** when this works. **Clear** next to it (click twice) empties the list;

@@ -1,7 +1,7 @@
 // Where the phone form sends answers and where the wheel reads names from.
 // Both are Google Forms owned by a WSTI account.
 window.DRAW = {
-  winners: 5,
+  winners: 3,
 
   // Full entry. Its Sheet is private and never shared.
   privateForm: {

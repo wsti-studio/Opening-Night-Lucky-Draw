@@ -12,7 +12,7 @@ const admin = require('./admin');
 const ROOT = __dirname;
 const PORT = Number(process.env.PORT) || 8080;
 const FILE = process.env.WINNERS_FILE || path.join(ROOT, 'data', 'winners.json');
-const MAX_WINNERS = 5;
+const MAX_WINNERS = 3;
 
 const TYPES = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.svg': 'image/svg+xml', '.css': 'text/css; charset=utf-8', '.png': 'image/png', '.ico': 'image/x-icon' };
 const PUBLIC = new Set(['index.html', 'config.js', 'festi-logo.svg']);
@@ -26,7 +26,7 @@ function writeWinners(winners) {
   fs.writeFileSync(tmp, JSON.stringify({ winners, savedAt: new Date().toISOString() }, null, 2));
   fs.renameSync(tmp, FILE);
 }
-// Keep only the fields the wheel uses, trimmed, and at most five winners.
+// Keep only the fields the wheel uses, trimmed, and at most three winners.
 function clean(list) {
   if (!Array.isArray(list)) return null;
   return list.slice(0, MAX_WINNERS).map((w) => ({
